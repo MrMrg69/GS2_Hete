@@ -1,7 +1,8 @@
 // routes/auth.js
 const express = require('express');
-const router = express.Router(); // Aqui é onde o objeto router é definido
+const router = express.Router();
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
 
@@ -20,12 +21,13 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'Email já cadastrado.' });
     }
 
+    // Cria um novo usuário (a senha será criptografada no pre-save hook do modelo)
     const newUser = new User({
       nome,
       sobrenome,
       dataNascimento,
       email,
-      senha: await bcrypt.hash(senha, 10), // Certifique-se de que bcrypt está configurado corretamente
+      senha, // A senha será criptografada automaticamente
     });
 
     await newUser.save();
@@ -48,6 +50,7 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: '1h' });
     res.json({ token, message: 'Login bem-sucedido' });
   } catch (error) {
+    console.error('Erro no servidor ao fazer login:', error);
     res.status(500).json({ message: 'Erro no servidor' });
   }
 });
@@ -55,13 +58,13 @@ router.post('/login', async (req, res) => {
 // Obter todos os usuários da base
 router.get('/users', auth, async (req, res) => {
   try {
-    const users = await User.find(); // Busca todos os usuários na base
+    const users = await User.find({}, '-senha'); // Busca todos os usuários e exclui o campo senha
     res.json(users);
   } catch (error) {
+    console.error('Erro no servidor ao obter usuários:', error);
     res.status(500).json({ message: 'Erro no servidor ao obter usuários' });
   }
 });
-
 
 // Deletar um usuário por ID
 router.delete('/users/:id', auth, async (req, res) => {
@@ -72,9 +75,9 @@ router.delete('/users/:id', auth, async (req, res) => {
     }
     res.json({ message: 'Usuário deletado com sucesso' });
   } catch (error) {
+    console.error('Erro no servidor ao deletar usuário:', error);
     res.status(500).json({ message: 'Erro no servidor ao deletar usuário' });
   }
 });
 
-
-module.exports = router; // Aqui o router é exportado para ser usado em server.js
+module.exports = router;

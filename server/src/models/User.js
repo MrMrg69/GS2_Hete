@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
 });
 
 // Hash da senha antes de salvar
-UserSchema.pre('save', async function (next) {
+userSchema.pre('save', async function (next) {
   if (!this.isModified('senha')) return next();
   try {
     const salt = await bcrypt.genSalt(10);
@@ -23,8 +23,8 @@ UserSchema.pre('save', async function (next) {
 });
 
 // Método para comparar senhas
-UserSchema.methods.comparePassword = async function (senha) {
-  return await bcrypt.compare(senha, this.senha);
+userSchema.methods.comparePassword = async function (senhaDigitada) {
+  return await bcrypt.compare(senhaDigitada, this.senha);
 };
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', userSchema);

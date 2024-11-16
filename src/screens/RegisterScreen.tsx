@@ -70,11 +70,10 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
   const handleRegister = async () => {
     if (validateForm()) {
       try {
-        console.log('Dados enviados:', form); // Log dos dados enviados
-  
+        console.log('Dados enviados:', form);
         const response = await registerUser(form);
-        console.log('Resposta do servidor:', response); // Log da resposta do servidor
-  
+        console.log('Resposta do servidor:', response);
+
         if (response.message === 'Usuário registrado com sucesso') {
           Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
           navigation.navigate('Login');
