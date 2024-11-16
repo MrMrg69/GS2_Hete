@@ -20,19 +20,18 @@ const AddCarScreen: React.FC<AddCarScreenProps> = ({ navigation, route }) => {
   const [modelo, setModelo] = useState('');
   const [ano, setAno] = useState('');
 
-  const handleSaveCar = () => {
+  const handleSaveCar = async () => {
     if (marca && modelo && ano) {
-      const newCar = {
-        id: Date.now().toString(), // Gera um ID único usando timestamp
-        marca,
-        modelo,
-        ano,
-      };
-      handleAddCar(newCar);
-      Alert.alert("Sucesso", "Carro adicionado com sucesso!");
-      navigation.goBack();
+      try {
+        await handleAddCar({ marca, modelo, ano });
+        Alert.alert('Sucesso', 'Carro adicionado com sucesso!');
+        navigation.goBack();
+      } catch (error) {
+        console.error('Erro ao salvar carro:', error);
+        Alert.alert('Erro', 'Não foi possível salvar o carro.');
+      }
     } else {
-      Alert.alert("Erro", "Por favor, preencha todos os campos.");
+      Alert.alert('Erro', 'Por favor, preencha todos os campos.');
     }
   };
 
@@ -54,8 +53,8 @@ const AddCarScreen: React.FC<AddCarScreenProps> = ({ navigation, route }) => {
       <TextInput
         style={styles.input}
         placeholder="Ano"
-        value={ano}
         keyboardType="numeric"
+        value={ano}
         onChangeText={setAno}
       />
       <Button title="Salvar Carro" onPress={handleSaveCar} />

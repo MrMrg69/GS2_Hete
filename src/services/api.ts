@@ -22,3 +22,10 @@ export const addCar = async (token: string, carData: { marca: string; modelo: st
     headers: { Authorization: `Bearer ${token}` },
   }).then((response) => response.data);
 };
+
+export const deleteCar = async (token: string, carId: string) => {
+  const response = await axios.delete(`${API_BASE_URL}/cars/${carId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};

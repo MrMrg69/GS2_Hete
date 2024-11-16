@@ -25,32 +25,6 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// Obter detalhes de um carro específico
-router.get('/:id', auth, async (req, res) => {
-  try {
-    const car = await Car.findOne({ _id: req.params.id, usuarioId: req.user.userId });
-    if (!car) {
-      return res.status(404).json({ message: 'Carro não encontrado' });
-    }
-    res.json(car);
-  } catch (error) {
-    res.status(500).json({ message: 'Erro no servidor' });
-  }
-});
-
-// Excluir um carro
-router.delete('/:id', auth, async (req, res) => {
-  try {
-    const car = await Car.findOneAndDelete({ _id: req.params.id, usuarioId: req.user.userId });
-    if (!car) {
-      return res.status(404).json({ message: 'Carro não encontrado' });
-    }
-    res.json({ message: 'Carro excluído com sucesso' });
-  } catch (error) {
-    res.status(500).json({ message: 'Erro no servidor' });
-  }
-});
-
 // Obter todos os carros da base
 router.get('/all', auth, async (req, res) => {
   try {
@@ -61,6 +35,18 @@ router.get('/all', auth, async (req, res) => {
   }
 });
 
-
+// Excluir um carro por ID
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    const car = await Car.findOneAndDelete({ _id: req.params.id, usuarioId: req.user.userId });
+    if (!car) {
+      return res.status(404).json({ message: 'Carro não encontrado' });
+    }
+    res.status(200).json({ message: 'Carro deletado com sucesso' });
+  } catch (error) {
+    console.error('Erro ao deletar carro:', error);
+    res.status(500).json({ message: 'Erro no servidor ao deletar carro' });
+  }
+});
 
 module.exports = router;

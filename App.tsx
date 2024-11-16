@@ -13,10 +13,11 @@ export type RootStackParamList = {
   Home: undefined;
   Register: undefined;
   Login: undefined;
-  CarList: { token: string }; // Tela de lista de carros requer o token
-  AddCar: { handleAddCar: (car: { id: string; marca: string; modelo: string; ano: string }) => void };
-  CarDetails: { car: { id: string; marca: string; modelo: string; ano: string } };
+  CarList: { token: string };
+  AddCar: { handleAddCar: (car: { marca: string; modelo: string; ano: string }) => Promise<void> };
+  CarDetails: { car: { _id: string; marca: string; modelo: string; ano: string } };
 };
+
 
 const Stack = createStackNavigator<RootStackParamList>();
 
