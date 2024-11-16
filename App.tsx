@@ -14,10 +14,9 @@ export type RootStackParamList = {
   Register: undefined;
   Login: undefined;
   CarList: { token: string };
-  AddCar: { handleAddCar: (car: { marca: string; modelo: string; ano: string }) => Promise<void> };
+  AddCar: { handleAddCar: (car: { marca: string; modelo: string; ano: string }) => void };
   CarDetails: { car: { _id: string; marca: string; modelo: string; ano: string } };
 };
-
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -25,45 +24,31 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        {/* Tela inicial */}
         <Stack.Screen 
           name="Home" 
           component={HomeScreen} 
           options={{ headerShown: false }} 
         />
-
-        {/* Tela de cadastro */}
         <Stack.Screen 
           name="Register" 
           component={RegisterScreen} 
           options={{ title: 'Cadastrar' }} 
         />
-
-        {/* Tela de login */}
         <Stack.Screen 
           name="Login" 
           component={LoginScreen} 
           options={{ title: 'Entrar' }} 
         />
-
-        {/* Tela de lista de carros */}
         <Stack.Screen 
           name="CarList" 
           component={CarListScreen} 
-          options={{ 
-            title: 'Meus Carros', 
-            headerBackTitle: 'Voltar', // Título do botão de voltar
-          }} 
+          options={{ title: 'Meus Carros', headerBackTitle: 'Voltar' }} 
         />
-
-        {/* Tela de adicionar carro */}
         <Stack.Screen 
           name="AddCar" 
           component={AddCarScreen} 
           options={{ title: 'Adicionar Carro' }} 
         />
-
-        {/* Tela de detalhes do carro */}
         <Stack.Screen 
           name="CarDetails" 
           component={CarDetailsScreen} 
