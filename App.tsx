@@ -13,7 +13,7 @@ export type RootStackParamList = {
   Home: undefined;
   Register: undefined;
   Login: undefined;
-  CarList: undefined;
+  CarList: { token: string }; // Tela de lista de carros requer o token
   AddCar: { handleAddCar: (car: { id: string; marca: string; modelo: string; ano: string }) => void };
   CarDetails: { car: { id: string; marca: string; modelo: string; ano: string } };
 };
@@ -24,12 +24,50 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'Cadastrar' }} />
-        <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Entrar' }} />
-        <Stack.Screen name="CarList" component={CarListScreen} options={{ title: 'Meus Carros' }} />
-        <Stack.Screen name="AddCar" component={AddCarScreen} options={{ title: 'Adicionar Carro' }} />
-        <Stack.Screen name="CarDetails" component={CarDetailsScreen} options={{ title: 'Detalhes do Carro' }} />
+        {/* Tela inicial */}
+        <Stack.Screen 
+          name="Home" 
+          component={HomeScreen} 
+          options={{ headerShown: false }} 
+        />
+
+        {/* Tela de cadastro */}
+        <Stack.Screen 
+          name="Register" 
+          component={RegisterScreen} 
+          options={{ title: 'Cadastrar' }} 
+        />
+
+        {/* Tela de login */}
+        <Stack.Screen 
+          name="Login" 
+          component={LoginScreen} 
+          options={{ title: 'Entrar' }} 
+        />
+
+        {/* Tela de lista de carros */}
+        <Stack.Screen 
+          name="CarList" 
+          component={CarListScreen} 
+          options={{ 
+            title: 'Meus Carros', 
+            headerBackTitle: 'Voltar', // Título do botão de voltar
+          }} 
+        />
+
+        {/* Tela de adicionar carro */}
+        <Stack.Screen 
+          name="AddCar" 
+          component={AddCarScreen} 
+          options={{ title: 'Adicionar Carro' }} 
+        />
+
+        {/* Tela de detalhes do carro */}
+        <Stack.Screen 
+          name="CarDetails" 
+          component={CarDetailsScreen} 
+          options={{ title: 'Detalhes do Carro' }} 
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

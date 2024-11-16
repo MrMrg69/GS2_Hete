@@ -51,4 +51,16 @@ router.delete('/:id', auth, async (req, res) => {
   }
 });
 
+// Obter todos os carros da base
+router.get('/all', auth, async (req, res) => {
+  try {
+    const cars = await Car.find(); // Busca todos os carros na base
+    res.json(cars);
+  } catch (error) {
+    res.status(500).json({ message: 'Erro no servidor' });
+  }
+});
+
+
+
 module.exports = router;

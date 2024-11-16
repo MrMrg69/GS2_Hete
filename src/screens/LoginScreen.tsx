@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, Alert } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../App';
-import styles from '../styles/RegisterScreenStyles';
+import styles from '../styles/LoginScreenStyles';
+import { loginUser } from '../services/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -33,11 +35,20 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     return valid;
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (validateLogin()) {
-      // Simulação de autenticação bem-sucedida
-      Alert.alert("Sucesso", "Login realizado com sucesso!");
-      navigation.navigate('CarList'); // Redireciona para a tela de lista de carros após o login bem-sucedido
+      try {
+        const response = await loginUser({ email, senha });
+        if (response.token) {
+          Alert.alert("Sucesso", "Login realizado com sucesso!");
+          await AsyncStorage.setItem('authToken', response.token);
+          navigation.navigate('CarList', { token: response.token });
+        } else {
+          Alert.alert("Erro", "Token não recebido.");
+        }
+      } catch (error) {
+        Alert.alert("Erro", "Erro ao fazer login. Verifique suas credenciais.");
+      }
     }
   };
 

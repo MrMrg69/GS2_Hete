@@ -4,6 +4,8 @@ import { View, Text, TextInput, Button, TouchableOpacity, Alert } from 'react-na
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../App';
 import styles from '../styles/RegisterScreenStyles';
+import { registerUser } from '../services/api';
+import axios from 'axios';
 
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Register'>;
 
@@ -65,10 +67,29 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
     return valid;
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (validateForm()) {
-      Alert.alert("Sucesso", "Cadastro realizado com sucesso!");
-      navigation.navigate('Login'); // Redireciona para a tela de login após o cadastro bem-sucedido
+      try {
+        console.log('Dados enviados:', form); // Log dos dados enviados
+  
+        const response = await registerUser(form);
+        console.log('Resposta do servidor:', response); // Log da resposta do servidor
+  
+        if (response.message === 'Usuário registrado com sucesso') {
+          Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
+          navigation.navigate('Login');
+        } else {
+          Alert.alert('Erro', response.message || 'Erro ao registrar');
+        }
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          console.error('Erro ao registrar:', error.response?.data || error.message);
+          Alert.alert('Erro', error.response?.data?.message || 'Erro de conexão com o servidor');
+        } else {
+          console.error('Erro desconhecido:', error);
+          Alert.alert('Erro', 'Um erro inesperado ocorreu.');
+        }
+      }
     }
   };
 
