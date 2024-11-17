@@ -4,7 +4,7 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../App';
 import styles from '../styles/CarDetailsScreenStyles';
-import { Picker } from '@react-native-picker/picker';
+import ModalSelector from 'react-native-modal-selector';
 
 type CarDetailsScreenRouteProp = RouteProp<RootStackParamList, 'CarDetails'>;
 type CarDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'CarDetails'>;
@@ -46,7 +46,10 @@ const CarDetailsScreen: React.FC<CarDetailsScreenProps> = ({ route }) => {
         const timeToMilestone = (percentToMilestone / remainingCharge) * estimatedTimeInMinutes;
 
         milestoneTime.setMinutes(milestoneTime.getMinutes() + timeToMilestone);
-        milestonesTimes[`${milestone}%`] = milestoneTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        milestonesTimes[`${milestone}%`] = milestoneTime.toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        });
       }
     });
 
@@ -70,22 +73,34 @@ const CarDetailsScreen: React.FC<CarDetailsScreenProps> = ({ route }) => {
     return () => clearInterval(interval);
   }, [chargingZone, batteryLevel]);
 
+  const options = [
+    { key: 'domestica', label: 'Doméstica' },
+    { key: 'posto', label: 'Posto' },
+  ];
+
   return (
     <View style={styles.container}>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Informações do Carro</Text>
-        <Text>Marca: {car.marca}</Text>
-        <Text>Modelo: {car.modelo}</Text>
-        <Text>Ano: {car.ano}</Text>
+        <Text style={styles.textMarca}>Marca: {car.marca}</Text>
+        <Text style={styles.textModelo}>Modelo: {car.modelo}</Text>
+        <Text style={styles.textAno}>Ano: {car.ano}</Text>
       </View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Gerenciamento de Bateria</Text>
-        <Text>Bateria atual: {Math.round(batteryLevel)}% - Carregamento completo às {completionTime}</Text>
-        {milestones['25%'] && <Text>25% de bateria às {milestones['25%']}</Text>}
-        {milestones['50%'] && <Text>50% de bateria às {milestones['50%']}</Text>}
-        {milestones['75%'] && <Text>75% de bateria às {milestones['75%']}</Text>}
-
+        <Text style={styles.batteryText}>
+          Bateria atual: {Math.round(batteryLevel)}% - Carregamento completo às {completionTime}
+        </Text>
+        {milestones['25%'] && (
+          <Text style={styles.milestoneText}>25% de bateria às {milestones['25%']}</Text>
+        )}
+        {milestones['50%'] && (
+          <Text style={styles.milestoneText}>50% de bateria às {milestones['50%']}</Text>
+        )}
+        {milestones['75%'] && (
+          <Text style={styles.milestoneText}>75% de bateria às {milestones['75%']}</Text>
+        )}
         {/* Barra de Progresso */}
         <View style={styles.progressBarContainer}>
           <View style={[styles.progressBar, { width: `${batteryLevel}%` }]} />
@@ -94,13 +109,18 @@ const CarDetailsScreen: React.FC<CarDetailsScreenProps> = ({ route }) => {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Zona de Carregamento</Text>
-        <Picker
-          selectedValue={chargingZone}
-          onValueChange={(itemValue) => setChargingZone(itemValue)}
-        >
-          <Picker.Item label="Doméstica" value="Doméstica" />
-          <Picker.Item label="Posto" value="Posto" />
-        </Picker>
+        <View style={styles.pickerContainer}>
+          <ModalSelector
+            data={options}
+            initValue={chargingZone}
+            onChange={(option) => setChargingZone(option.label)}
+            optionContainerStyle={styles.optionContainer}
+            optionTextStyle={styles.optionText}
+            initValueTextStyle={styles.initValueText}
+            selectStyle={styles.selectStyle}
+            selectTextStyle={styles.selectText}
+          />
+        </View>
       </View>
     </View>
   );
