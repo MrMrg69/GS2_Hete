@@ -1,0 +1,240 @@
+{
+	"info": {
+		"_postman_id": "6a88a5a5-0a2c-49ea-b2c5-23d5da58a462",
+		"name": "GS2_Hete",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39752254"
+	},
+	"item": [
+		{
+			"name": "Criação Usuário",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nome\": \"Teste2\",\r\n  \"sobrenome\": \"Usuario2\",\r\n  \"dataNascimento\": \"01/01/2002\",\r\n  \"email\": \"teste2@example.com\",\r\n  \"senha\": \"SenhaForte@222\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_BASE_URL}}/auth/register",
+					"host": [
+						"{{API_BASE_URL}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login e Token Autenticação",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"mr.viniciusmrg@gmail.com\",\r\n    \"senha\": \"Aa@1\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_BASE_URL}}/auth/login",
+					"host": [
+						"{{API_BASE_URL}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Adição de Carros para o usuário",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{AUTH_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"marca\": \"Tesla\",\r\n    \"modelo\": \"Modelo S\",\r\n    \"ano\": 2022\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_BASE_URL}}/cars",
+					"host": [
+						"{{API_BASE_URL}}"
+					],
+					"path": [
+						"cars"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obter Carros (Usuário Logado)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{AUTH_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_BASE_URL}}/cars",
+					"host": [
+						"{{API_BASE_URL}}"
+					],
+					"path": [
+						"cars"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obter Carro Específico",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{AUTH_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_BASE_URL}}/cars/6738ed54be33abe9024546b2",
+					"host": [
+						"{{API_BASE_URL}}"
+					],
+					"path": [
+						"cars",
+						"6738ed54be33abe9024546b2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obter Todos Usuários Base",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{AUTH_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_BASE_URL}}/auth/users",
+					"host": [
+						"{{API_BASE_URL}}"
+					],
+					"path": [
+						"auth",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deletar Carro",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{AUTH_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{API_BASE_URL}}/cars/6738f57e6b908eb04aed173c",
+					"host": [
+						"{{API_BASE_URL}}"
+					],
+					"path": [
+						"cars",
+						"6738f57e6b908eb04aed173c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deletar Usuário",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{AUTH_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{API_BASE_URL}}/auth/users/6738ed00be33abe9024546ad",
+					"host": [
+						"{{API_BASE_URL}}"
+					],
+					"path": [
+						"auth",
+						"users",
+						"6738ed00be33abe9024546ad"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
