@@ -1,3 +1,4 @@
+// src/styles/CarDetailsScreenStyles.ts
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
@@ -28,12 +29,16 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  batteryText: {
-    fontSize: 16,
-    marginBottom: 10,
-  },
-  chargeText: {
-    fontSize: 16,
+  progressBarContainer: {
+    height: 20,
+    width: '100%',
+    backgroundColor: '#e0e0e0',
+    borderRadius: 10,
+    overflow: 'hidden',
     marginTop: 10,
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: '#4caf50',
   },
 });
